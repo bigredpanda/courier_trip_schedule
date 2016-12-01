@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <button id="addButton" class="btn btn-success pull-right">+</button>
+
+    <table id="regions" class="table table-bordered">
+        <thead>
+            <th>#</th>
+            <th>Name</th>
+            <th>Trip duration</th>
+            <th></th>
+        </thead>
+    </table>
+
+    {{ include ('@App/Region/add_modal.html.twig', {'form' : form}) }}
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(function () {
+            app.table.init($('#regions'), {
+                "ajax": {
+                    "url": "{{ path('get_regions_ajax') }}",
+                },
+                "searching": false,
+                "bAutoWidth": false,
+                "processing": true,
+                "serverSide": true,
+                "bSortCellsTop": true,
+                "bInfo": false,
+                "order": [],
+                "dom": '<"top">t<"bottom"p><"clear">',
+                "columnDefs": [ {
+                    "targets": -1,
+                    "data": null,
+                    "defaultContent": "<button class='btn btn-xs btn-danger table-control deleteBtn center-block'>X</button>"
+                } ],
+                "columns": [
+                    {
+                        "data": "id",
+                        "searchable": false,
+                        "orderable": false
+                    },
+                    {
+                        "data": "name",
+                        "searchable": false,
+                        "orderable": false
+                    },
+                    {
+                        "data": "tripDuration",
+                        "searchable": false,
+                        "orderable": false
+                    },
+                    {
+                        "data": "",
+                        "searchable": false,
+                        "orderable": false
+                    },
+                ],
+            }, "{{ path('delete_region') }}");
+        })
+    </script>
+{% endblock %}

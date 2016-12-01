@@ -1,0 +1,41 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity()
+ * @ORM\Table(name="courier")
+ */
+class Courier
+{
+    /**
+     * @var integer
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    protected $id;
+
+    /**
+     * @ORM\Column(name="first_name", type="string", length=32)
+     */
+    protected $firstName;
+
+    /**
+     * @ORM\Column(name="middle_name", type="string", length=32)
+     */
+    protected $middleName;
+
+    /**
+     * @ORM\Column(name="last_name", type="string", length=32)
+     */
+    protected $lastName;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Schedule", mappedBy="courier")
+     */
+    protected $schedule;
+
+}

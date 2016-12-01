@@ -1,0 +1,23 @@
+{
+  "name": "courier_schedule",
+  "description": "",
+  "main": "web/index.php",
+  "authors": [
+    "Pavel Spichak <bigredpanda94@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.1.1",
+    "bootstrap": "^3.3.7",
+    "datatables": "^1.10.12",
+    "bootstrap-datepicker": "^1.6.4"
+  }
+}

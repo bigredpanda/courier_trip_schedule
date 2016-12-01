@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <button id="generateDataBtn" class="btn btn-lg btn-primary center-block">GENERATE!</button>
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(function () {
+            app.generateData("{{ path('generate_data') }}");
+        })
+    </script>
+{% endblock %}
+
+

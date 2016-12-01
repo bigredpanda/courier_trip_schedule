@@ -1,0 +1,103 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <button id="addButton" class="btn btn-success pull-right">+</button>
+
+    <div id="filter" class="col-md-12">
+        <h2>Filter</h2>
+        <div id="departureFilter" class="form-horizontal col-md-6">
+            <h4>Choose departure date period</h4>
+            <div class="col-md-6 form-group">
+                <label for="departureDateFrom">From</label>
+                <input id="departureDateFrom" class="form-control bootstrapDatepicker">
+            </div>
+            <div class="col-md-6 form-group" style="margin-left: 10px">
+                <label for="departureDateTo">To</label>
+                <input id="departureDateTo" class="form-control bootstrapDatepicker">
+            </div>
+        </div>
+        <div id="arrivalFilter" class="form-horizontal col-md-6">
+            <h4>Choose arrival date period</h4>
+            <div class="col-md-6 form-group">
+                <label for="arrivalDateFrom">From</label>
+                <input id="arrivalDateFrom" class="form-control bootstrapDatepicker">
+            </div>
+            <div class="col-md-6 form-group" style="margin-left: 10px">
+                <label for="arrivalDateTo">To</label>
+                <input id="arrivalDateTo" class="form-control bootstrapDatepicker">
+            </div>
+        </div>
+    </div>
+    <table id="schedule" class="table table-bordered">
+        <thead>
+        <th>#</th>
+        <th>Region</th>
+        <th>Courier</th>
+        <th>Departure time</th>
+        <th>Arrival time</th>
+        <th></th>
+        </thead>
+    </table>
+
+    {{ include ('@App/Region/add_modal.html.twig', {'form' : form}) }}
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        $(function () {
+            app.schedule.init("{{ path('get_disable_dates') }}", "{{ path('get_trip_time') }}");
+            app.table.init($('#schedule'), {
+                "ajax": {
+                    "url": "{{ path('get_schedule_ajax') }}",
+                    "data": function (d) {
+                        d.departureDateFrom = $('#departureDateFrom').val();
+                        d.departureDateTo = $('#departureDateTo').val();
+                        d.arrivalDateFrom = $('#arrivalDateFrom').val();
+                        d.arrivalDateTo = $('#arrivalDateTo').val();
+                    }
+                },
+                "searching": false,
+                "bAutoWidth": false,
+                "processing": true,
+                "serverSide": true,
+                "bSortCellsTop": true,
+                "bInfo": false,
+                "dom": '<"top">t<"bottom"p><"clear">',
+                "columnDefs": [{
+                    "targets": -1,
+                    "data": null,
+                    "defaultContent": "<button class='btn btn-xs btn-danger table-control deleteBtn center-block'>X</button>"
+                }],
+                "columns": [
+                    {
+                        "data": "id",
+                        "searchable": false,
+                    },
+                    {
+                        "data": "region",
+                        "searchable": false
+                    },
+                    {
+                        "data": "courierName",
+                        "searchable": false
+                    },
+                    {
+                        "data": "departureDate",
+                        "searchable": false
+                    },
+                    {
+                        "data": "arrivalDate",
+                        "searchable": false
+                    },
+                    {
+                        "data": "",
+                        "searchable": false,
+                        "orderable": false
+                    },
+                ],
+            }, "{{ path('delete_region') }}");
+
+
+        })
+    </script>
+{% endblock %}

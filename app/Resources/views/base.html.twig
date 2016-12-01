@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/vendor.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('css/styles.css') }}"/>
+    {% endblock %}
+
+</head>
+<body>
+<div id="navigation">
+    <a href="{{ path('index') }}">Generate data</a> *
+    <a href="{{ path('couriers_list') }}">Couriers</a> *
+    <a href="{{ path('region_list') }}">Regions</a> *
+    <a href="{{ path('schedule') }}">Trip schedule</a>
+</div>
+
+<div id="content">
+    {% block content %}{% endblock %}
+</div>
+
+<script src="{{ asset('js/vendor.js') }}"></script>
+<script src="{{ asset('js/custom.js') }}"></script>
+<script>
+    $(function() {
+       app.init();
+    });
+</script>
+{% block javascript %}{% endblock %}
+</body>
+</html>
