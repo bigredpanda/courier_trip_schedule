@@ -34,9 +34,7 @@ class LoadRegions extends AbstractFixture implements OrderedFixtureInterface
             $regions[] = $region;
         }
         $om->flush();
-        $regionsCount = sizeof($regions);
-//        $this->addReference('regionsCount', $regionsCount);
-        for ($i = 0; $i < $regionsCount; $i++) {
+        for ($i = 0; $i < sizeof($regions); $i++) {
             $this->addReference('region' . $i, $regions[$i]);
         }
     }

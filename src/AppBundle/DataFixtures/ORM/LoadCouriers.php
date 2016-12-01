@@ -30,10 +30,7 @@ class LoadCouriers extends AbstractFixture implements OrderedFixtureInterface
             $couriers[] = $courier;
         }
         $om->flush();
-        $couriersCount = sizeof($couriers);
-//        $this->addReference('couriersCount', $couriersCount);
-
-        for ($i = 0; $i < $couriersCount; $i++) {
+        for ($i = 0; $i < sizeof($couriers); $i++) {
             $this->addReference('courier' . $i, $couriers[$i]);
         }
 
