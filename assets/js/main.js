@@ -76,6 +76,14 @@ var app = {
             $('#schedule_form_courier').on('change', function (e) {
                 app.schedule.getDisabledDates(e.target.value, getDisableDatesUrl);
             }).trigger('change');
+
+            $('#schedule_form_region').on('change', function (e) {
+                var date = $('#schedule_form_departureDate').val();
+                if(date != '') {
+                    app.schedule.getTripTime(e.target.value,
+                        moment( $('#schedule_form_departureDate').val()).format('YYYY-MM-DD'), getTripTimeUrl);
+                }
+            });
         },
 
         getDisabledDates: function (courierId, getDisableDatesUrl) {
