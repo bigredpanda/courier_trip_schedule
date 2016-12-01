@@ -1,7 +1,7 @@
 Install
 ================
 Perform next steps in order:
-* git clone origin https://github.com/bigredpanda/courier_trip_schedule.git
+* git clone https://github.com/bigredpanda/courier_trip_schedule.git
 * cd courier_trip_schedule
 * npm install
 * composer install
