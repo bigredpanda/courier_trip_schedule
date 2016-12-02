@@ -12,13 +12,14 @@ class LoadSchedule extends AbstractFixture implements OrderedFixtureInterface
 {
     public function load(ObjectManager $om)
     {
-        $endDate = new \DateTime('now');
+
+        $currentDate = new \DateTime('now');
+
         $couriersCount = 40;
-        $scheduleList = [];
         for($i = 0; $i < $couriersCount; $i++) {
             $courier = $this->getReference('courier' . $i);
             $startDate = new \DateTime('2015-06-01');
-            while ($startDate <= $endDate) {
+            while ($startDate <= $currentDate) {
                 $region = $this->getReference('region' . rand(0, 9));
                 $schedule = new Schedule();
                 $schedule->setCourier($courier);
@@ -27,12 +28,9 @@ class LoadSchedule extends AbstractFixture implements OrderedFixtureInterface
                 $schedule->setDepartureDate(clone $startDate);
                 $arrivalDate = $startDate->add(new \DateInterval('P' . $region->getTripDuration() . 'D'));
                 $schedule->setArrivalDate(clone $arrivalDate);
-                $scheduleList[] = $schedule;
                 $startDate = $startDate->add(new \DateInterval('P' . rand(1, 100) . 'D'));
+                $om->persist($schedule);
             }
-        }
-        foreach($scheduleList as $schedule) {
-            $om->persist($schedule);
         }
         $om->flush();
     }

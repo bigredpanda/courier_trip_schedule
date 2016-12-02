@@ -33,7 +33,6 @@ class LoadCouriers extends AbstractFixture implements OrderedFixtureInterface
         for ($i = 0; $i < sizeof($couriers); $i++) {
             $this->addReference('courier' . $i, $couriers[$i]);
         }
-
     }
 
     public function getOrder()
