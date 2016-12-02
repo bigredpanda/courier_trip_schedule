@@ -89,7 +89,7 @@ var app = {
                 var date = app.schedule.departureDate.val();
                 if (date != '') {
                     app.schedule.getTripTime(e.target.value,
-                        moment(app.schedule.departureDate.val()).format('YYYY-MM-DD'), getTripTimeUrl);
+                        moment(date).format('YYYY-MM-DD'), getTripTimeUrl);
                 }
             });
         },
