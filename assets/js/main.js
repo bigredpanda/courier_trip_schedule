@@ -1,22 +1,23 @@
 var app = {
     generateData: function (generateDataUrl) {
-       $('#generateDataBtn').on('click', function () {
-           $.ajax({
-               method: "POST",
-               url: generateDataUrl,
-               beforeSend: function() {
-                   $('#generateDataBtn').text('Loading...');
-                   $('#generateDataBtn').attr('disabled', true);
+        this.generateBtn = $('#generateDataBtn');
+        this.generateBtn.on('click', function () {
+            $.ajax({
+                method: "POST",
+                url: generateDataUrl,
+                beforeSend: function () {
+                    app.generateBtn.text('Loading...');
+                    app.generateBtn.attr('disabled', true);
 
-               },
-               success: function () {
-                   $('#generateDataBtn').text('SUCCESS!');
-                   $('#generateDataBtn').attr('disabled', true);
-               },
-               error: function (err) {
-               }
-           });
-       })
+                },
+                success: function () {
+                    app.generateBtn.text('SUCCESS!');
+                    app.generateBtn.attr('disabled', true);
+                },
+                error: function (err) {
+                }
+            });
+        })
     },
     init: function () {
         $('#addButton').on('click', function () {
@@ -32,7 +33,7 @@ var app = {
                 app.table.removeRecord(removeUrl, data.id);
             });
 
-            $('#arrivalDateTo, #arrivalDateFrom, #departureDateFrom, #departureDateTo').on('change', function() {
+            $('#arrivalDateTo, #arrivalDateFrom, #departureDateFrom, #departureDateTo').on('change', function () {
                 table.ajax.reload();
             });
         },
@@ -56,21 +57,28 @@ var app = {
 
     schedule: {
         init: function (getDisableDatesUrl, getTripTimeUrl) {
+            this.departureDate = $('#schedule_form_departureDate');
+            this.arrivalDate = $('#schedule_form_arrivalDate');
+
             $('.bootstrapDatepicker').datepicker({
                 'container': '#filter',
                 'autoclose': true,
                 'format': 'yyyy-mm-dd'
             });
-            $('#schedule_form_arrivalDate').val("Not enough data to calculate!");
-            $('#schedule_form_departureDate').datepicker({
+            this.arrivalDate.val("Not enough data to calculate!");
+            this.departureDate.datepicker({
                 'container': '#addModal',
                 'autoclose': true,
                 'format': 'yyyy-mm-dd'
-            }).on('changeDate', function (e) {
-                if(e.date != undefined) {
+            }).on('changeDate clearDate', function (e) {
+                if (e.date != undefined) {
                     app.schedule.getTripTime($('#schedule_form_region option:selected').val(),
                         moment(e.date).format('YYYY-MM-DD'), getTripTimeUrl);
+                } else {
+                    app.schedule.arrivalDate.val("Not enough data to calculate!");
                 }
+            }).on('keyup', function () {
+                $(this).val('');
             });
 
             $('#schedule_form_courier').on('change', function (e) {
@@ -78,10 +86,10 @@ var app = {
             }).trigger('change');
 
             $('#schedule_form_region').on('change', function (e) {
-                var date = $('#schedule_form_departureDate').val();
-                if(date != '') {
+                var date = app.schedule.departureDate.val();
+                if (date != '') {
                     app.schedule.getTripTime(e.target.value,
-                        moment( $('#schedule_form_departureDate').val()).format('YYYY-MM-DD'), getTripTimeUrl);
+                        moment(app.schedule.departureDate.val()).format('YYYY-MM-DD'), getTripTimeUrl);
                 }
             });
         },
@@ -92,12 +100,12 @@ var app = {
                 url: getDisableDatesUrl,
                 data: {courierId: courierId},
                 success: function (data) {
-                    if(data != 'error') {
-                        if(data.includes($('#schedule_form_departureDate').val())) {
-                            $('#schedule_form_departureDate').datepicker('clearDates');
-                            $('#schedule_form_arrivalDate').val("Not enough data to calculate!");
+                    if (data != 'error') {
+                        if (data.includes(app.schedule.departureDate.val())) {
+                            app.schedule.departureDate.datepicker('clearDates');
+                            app.schedule.arrivalDate.val("Not enough data to calculate!");
                         }
-                        $('#schedule_form_departureDate').datepicker('setDatesDisabled', data);
+                        app.schedule.departureDate.datepicker('setDatesDisabled', data);
                     }
                 },
                 error: function (err) {
@@ -111,11 +119,11 @@ var app = {
                 method: "GET",
                 url: getTripTimeUrl,
                 data: {regionId: regionId},
-                success: function(data) {
-                    $('#schedule_form_arrivalDate').val(moment(departureTime).add(data, 'days').format('YYYY-MM-DD'));
+                success: function (data) {
+                    app.schedule.arrivalDate.val(moment(departureTime).add(data, 'days').format('YYYY-MM-DD'));
 
                 },
-                error: function(err) {
+                error: function (err) {
                     // console.log(err);
                 }
             });
